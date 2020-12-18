@@ -5,10 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
   <link rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/tachyons/4.11.1/tachyons.min.css"
+    href="//cdnjs.cloudflare.com/ajax/libs/tachyons/4.11.1/tachyons.min.css"
     integrity="sha512-d0v474klOFSF7qD9WDvyRxAvXaWSxCHDZdnBSZQjo8BpVr6vpjwAgqetpqkKP38DzlOzdVPaLVnzzW1Ba8wB9w=="
     crossorigin="anonymous" />
-  <script src="//unpkg.com/bsv@^2.0.4"></script>
+
+  <!-- Require Paypresto and its dependencies -->
+  <script src="//unpkg.com/bsv"></script>
   <script src="//unpkg.com/txforge"></script>
   <script src="//unpkg.com/paypresto.js"></script>
 
@@ -41,7 +43,7 @@
         // Create the Paypresto payment instance
         const payment = Presto.create({
           description: 'Tipping example payment',
-          outputs: [{ to: '1CBTGrChDDGsewF1eAV6FQyxRaSXRvUT7o', satoshis }]
+          outputs: [{ to: tipAddress, satoshis }]
         })
 
         // Events
@@ -70,15 +72,15 @@
 </head>
 <body class="sans-serif dark-gray bg-near-white">
   <div class="flex flex-column justify-start min-vh-100 mw7 center pa3 pa4-ns bg-white shadow-2">
-    <header class="mt2 mb4 flex items-end justify-between">
-      <h1 class="mv0 f2 lh-title">
-        <span>Paypresto</span>
-        <span class="pl1 f3 fw4 gray">Tipping example</span>
-      </h1>
-      <div class="pb2 f6 lh-copy">
+    <header class="mt2 mb4 flex items-center justify-between">
+      <div class="pr2">
+        <h1 class="mt0 mb1 f3 lh-title">Paypresto examples</h1>
+        <h2 class="mv0 db f4 lh-title fw6 gray">Simple tipping example</h2>
+      </div>
+      <div class="pl2">
         <a href="https://github.com/libitx/paypresto-examples/blob/master/examples/vanilla.tipping.html"
           target="_blank"
-          class="link fw5 blue hover-hot-pink">
+          class="link f6 lh-copy fw5 blue hover-hot-pink">
           View page source
         </a>
       </div>
@@ -86,16 +88,16 @@
 
     <main>
       <p class="mv3 measure-wide f4 lh-copy">
-        A simple way to use Paypresto is as a widget to allow users to send any
-        arbitrary amount to a given Bitcoin address.
+        The simplest way to use Paypresto is as a widget to allow users to send
+        any arbitrary amount to a given Bitcoin address. 
       </p>
-      <h2 class="mt5 mb3 f4 lh-title">Try it&hellip;</h2>
+
+      <h3 class="mt5 mb3 f4 lh-title">Try it&hellip;</h3>
+
       <p class="mv3 measure-wide f4 lh-copy">Tip the Paypresto tip jar:</p>
+
       <div class="mv3 flex items-center">
-        <label for="tip-field"
-          class="pr3 f5">
-          Amount:
-        </label>
+        <label for="tip-field" class="pr3 f5">Amount:</label>
         <div>
           <input id="tip-field"
             class="input-reset w4 pa2 code mid-gray bg-white ba b--moon-gray br2"
@@ -113,6 +115,7 @@
         </div>
       </div>
 
+      <!-- The Paypresto widget will be mounted here -->
       <div id="paypresto" class="mv4"></div>
     </main>
 

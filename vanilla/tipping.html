@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/tachyons/4.11.1/tachyons.min.css"
+    integrity="sha512-d0v474klOFSF7qD9WDvyRxAvXaWSxCHDZdnBSZQjo8BpVr6vpjwAgqetpqkKP38DzlOzdVPaLVnzzW1Ba8wB9w=="
+    crossorigin="anonymous" />
+  <script src="//unpkg.com/bsv@^2.0.4"></script>
+  <script src="//unpkg.com/txforge"></script>
+  <script src="//unpkg.com/paypresto.js"></script>
+
+  <script>
+    // Assign the Presto class and embed function
+    const { Presto, embed } = Paypresto
+
+    // Define an address for the tip recipient
+    // This may come from a database. If using paymail addresses it is necessary
+    // to resolve an address first.
+    const tipAddress = '1KYYakr8DaVhow8pgnHVwPEFi9Re52RiJD'
+
+    window.addEventListener('DOMContentLoaded', function() {
+      // Gather the relevant html elements into variables
+      const $tipField   = document.getElementById('tip-field'),
+            $tipButton  = document.getElementById('tip-button'),
+            $widget     = document.getElementById('paypresto');
+
+      // Attach event handler to tip button clicks
+      $tipButton.addEventListener('click', function() {
+        // Validate the tip amount and fail if we dont have a valid amount
+        const satoshis = $tipField.value
+        if (isNaN(satoshis) || satoshis <= 546) {
+          return alert('Not a valid tip amount')
+        }
+
+        // Disable the fields to prevent further clicks
+        $tipField.setAttribute('disabled', true)
+        $tipButton.setAttribute('disabled', true)
+        
+        // Create the Paypresto payment instance
+        const payment = Presto.create({
+          description: 'Tipping example payment',
+          outputs: [{ to: '1CBTGrChDDGsewF1eAV6FQyxRaSXRvUT7o', satoshis }]
+        })
+
+        // Events
+        payment
+          // Success event fires with an object containing the txid and rawtx
+          .on('success', function({ txid, rawtx }) {
+            console.log('SUCCESS ✅')
+            console.log('txid', txid)
+            console.log('rawtx', rawtx)
+            alert('Tip successful! Check browser console for details.')
+          })
+          // Error event fires with the exception to handle
+          .on('error', function(error) {
+            console.error('ERROR ❌')
+            console.error(error)
+            alert('An error occured! Check browser console for details.')
+          })
+
+        // Embed the widget into the specified html element
+        payment.mount(embed($widget))
+      })
+    })    
+  </script>
+
+</head>
+<body class="sans-serif dark-gray bg-near-white">
+  <div class="flex flex-column justify-start min-vh-100 mw7 center pa3 pa4-ns bg-white shadow-2">
+    <header>
+      <h1 class="mt2 mb4 f2 lh-title">
+        <span>Paypresto</span>
+        <span class="pl1 f3 fw4 gray">Tipping example</span>
+      </h1>
+    </header>
+
+    <main>
+      <p class="mv3 measure-wide f4 lh-copy">
+        A simple way to use Paypresto is as a widget to allow users to send any
+        arbitrary amount to a given Bitcoin address.
+      </p>
+      <h2 class="mt5 mb3 f4 lh-title">Try it&hellip;</h2>
+      <p class="mv3 measure-wide f4 lh-copy">Tip the Paypresto tip jar:</p>
+      <div class="mv3 flex items-center">
+        <label for="tip-field"
+          class="pr3 f5">
+          Amount:
+        </label>
+        <div>
+          <input id="tip-field"
+            class="input-reset w4 pa2 code mid-gray bg-white ba b--moon-gray br2"
+            type="number"
+            min="1000"
+            step="1000"
+            value="1000" />
+          <span class="pl1 f6 gray">satoshis</span>
+        </div>
+        <div class="pl3">
+          <button id="tip-button"
+            class="button-reset pv2 ph3 sans-serif white fw7 bg-animate bg-dark-green hover-bg-green bn br2 outline-0 pointer">
+            Send tip
+          </button>
+        </div>
+      </div>
+
+      <div id="paypresto" class="mv4"></div>
+    </main>
+
+    <footer class="mt4" style="margin-top: auto;">
+      <div class="flex justify-between f6 lh-copy">
+        <a href="https://github.com/libitx/paypresto-examples" class="link fw5 blue hover-hot-pink">View page source</a>
+        <a href="https://www.paypresto.co" class="link fw5 blue hover-hot-pink">www.paypresto.co</a>
+      </div>
+    </footer>
+  </div>
+</body>
+</html>

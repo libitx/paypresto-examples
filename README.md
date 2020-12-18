@@ -6,7 +6,7 @@ A collection of examples demonstrating how to integrate [Paypresto](https://www.
 
 1. [Simple tipping example](https://libitx.github.io/paypresto-examples/examples/vanilla.tipping.html)
 
-*More comine soon&hellip;*
+*More coming soon&hellip;*
 
 ## Find out more
 

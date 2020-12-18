@@ -16,9 +16,8 @@
     // Assign the Presto class and embed function
     const { Presto, embed } = Paypresto
 
-    // Define an address for the tip recipient
-    // This may come from a database. If using paymail addresses it is necessary
-    // to resolve an address first.
+    // Define an address for the tip recipient. This may come from a database.
+    // If using paymail it is necessary to resolve the address first.
     const tipAddress = '1KYYakr8DaVhow8pgnHVwPEFi9Re52RiJD'
 
     window.addEventListener('DOMContentLoaded', function() {
@@ -50,8 +49,7 @@
           // Success event fires with an object containing the txid and rawtx
           .on('success', function({ txid, rawtx }) {
             console.log('SUCCESS ✅')
-            console.log('txid', txid)
-            console.log('rawtx', rawtx)
+            console.log({ txid, rawtx })
             alert('Tip successful! Check browser console for details.')
           })
           // Error event fires with the exception to handle
@@ -61,7 +59,9 @@
             alert('An error occured! Check browser console for details.')
           })
 
-        // Embed the widget into the specified html element
+        // Embed the widget into the given html element. In this demo we simply
+        // embed the widget into an element at the bottom of the page, but it
+        // could be a popover modal, slide-out panel or anywhere. Be creative!
         payment.mount(embed($widget))
       })
     })    
@@ -70,11 +70,18 @@
 </head>
 <body class="sans-serif dark-gray bg-near-white">
   <div class="flex flex-column justify-start min-vh-100 mw7 center pa3 pa4-ns bg-white shadow-2">
-    <header>
-      <h1 class="mt2 mb4 f2 lh-title">
+    <header class="mt2 mb4 flex items-end justify-between">
+      <h1 class="mv0 f2 lh-title">
         <span>Paypresto</span>
         <span class="pl1 f3 fw4 gray">Tipping example</span>
       </h1>
+      <div class="pb2 f6 lh-copy">
+        <a href="https://github.com/libitx/paypresto-examples/blob/master/examples/vanilla.tipping.html"
+          target="_blank"
+          class="link fw5 blue hover-hot-pink">
+          View page source
+        </a>
+      </div>
     </header>
 
     <main>
@@ -111,7 +118,7 @@
 
     <footer class="mt4" style="margin-top: auto;">
       <div class="flex justify-between f6 lh-copy">
-        <a href="https://github.com/libitx/paypresto-examples" class="link fw5 blue hover-hot-pink">View page source</a>
+        <a href="/" class="link fw5 blue hover-hot-pink">&laquo; Back to index</a>
         <a href="https://www.paypresto.co" class="link fw5 blue hover-hot-pink">www.paypresto.co</a>
       </div>
     </footer>
